@@ -1,0 +1,397 @@
+import { useSearch } from "@tanstack/react-router";
+import { Clock, Lock, Shield, Zap } from "lucide-react";
+import { useEffect, useRef } from "react";
+import Footer from "../components/layout/Footer";
+import Header from "../components/layout/Header";
+
+// Map service card names to option values in the select
+const SERVICE_VALUE_MAP: Record<string, string> = {
+  "Basic Electrician": "Basic Electrician - ₹299",
+  "Electrical Appliances": "Electrical Appliances - ₹349",
+  "Electrical Maintenance": "Electrical Maintenance - ₹399",
+  "AC & Cooling Services": "AC & Cooling Services - ₹499",
+  "Electrical Mechanic": "Electrical Mechanic - ₹299",
+};
+
+const handleBookingSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const form = e.currentTarget;
+  const data = {
+    id: Date.now(),
+    name:
+      (form.querySelector('[name="Full Name"]') as HTMLInputElement)?.value ||
+      "",
+    phone:
+      (form.querySelector('[name="Phone Number"]') as HTMLInputElement)
+        ?.value || "",
+    email:
+      (form.querySelector('[name="Email Address"]') as HTMLInputElement)
+        ?.value || "",
+    service:
+      (form.querySelector('[name="Service"]') as HTMLSelectElement)?.value ||
+      "",
+    address:
+      (form.querySelector('[name="Full Address"]') as HTMLTextAreaElement)
+        ?.value || "",
+    problem:
+      (
+        form.querySelector(
+          '[name="Problem Description"]',
+        ) as HTMLTextAreaElement
+      )?.value || "",
+    time:
+      (form.querySelector('[name="Preferred Time"]') as HTMLSelectElement)
+        ?.value || "",
+    timestamp: new Date().toISOString(),
+  };
+  try {
+    const existing = JSON.parse(localStorage.getItem("qr_bookings") || "[]");
+    existing.push(data);
+    localStorage.setItem("qr_bookings", JSON.stringify(existing));
+  } catch {
+    // Storage unavailable
+  }
+};
+
+export default function BookingPage() {
+  const nextInputRef = useRef<HTMLInputElement>(null);
+  const { service: serviceParam } = useSearch({ strict: false }) as {
+    service?: string;
+  };
+
+  const preSelectedValue = serviceParam
+    ? SERVICE_VALUE_MAP[serviceParam]
+    : undefined;
+
+  useEffect(() => {
+    document.title = "Book a Service | QuickRepair";
+    if (nextInputRef.current) {
+      nextInputRef.current.value = `${window.location.origin}/thankyou`;
+    }
+  }, []);
+
+  return (
+    <div
+      className="page-enter min-h-screen flex flex-col"
+      style={{ backgroundColor: "#F8F9FA" }}
+    >
+      <Header />
+
+      <main className="flex-1 py-12 md:py-16">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div
+              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
+              style={{ background: "rgba(255,140,66,0.12)" }}
+            >
+              <Zap size={28} style={{ color: "#ff8c42" }} />
+            </div>
+            <h1
+              className="font-heading font-extrabold text-3xl md:text-4xl text-foreground"
+              style={{ letterSpacing: "-0.025em" }}
+            >
+              Book Your Electrician
+            </h1>
+            <p className="text-muted-foreground mt-2">
+              Get a certified electrician at your doorstep in 30 minutes
+            </p>
+
+            {/* Trust badges */}
+            <div className="flex items-center justify-center gap-4 mt-4 flex-wrap">
+              {[
+                { icon: Clock, text: "30-Min Arrival" },
+                { icon: Shield, text: "Certified Team" },
+                { icon: Zap, text: "No Hidden Fees" },
+              ].map(({ icon: Icon, text }) => (
+                <span
+                  key={text}
+                  className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full"
+                  style={{
+                    background: "rgba(255,140,66,0.1)",
+                    color: "#ff8c42",
+                    border: "1px solid rgba(255,140,66,0.2)",
+                  }}
+                >
+                  <Icon size={12} />
+                  {text}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Pre-selected service notice */}
+          {preSelectedValue && (
+            <div
+              className="rounded-xl px-4 py-3 mb-5 flex items-start gap-3"
+              style={{
+                background: "rgba(0,212,170,0.07)",
+                border: "1.5px solid rgba(0,212,170,0.3)",
+              }}
+            >
+              <Lock
+                size={16}
+                style={{ color: "#00d4aa", marginTop: "2px", flexShrink: 0 }}
+              />
+              <div>
+                <p
+                  className="text-sm font-semibold"
+                  style={{ color: "#00a88a" }}
+                >
+                  Service pre-selected:{" "}
+                  <span style={{ color: "#ff8c42" }}>{serviceParam}</span>
+                </p>
+                <p
+                  className="text-xs mt-0.5"
+                  style={{ color: "#00a88a", opacity: 0.85 }}
+                >
+                  To select a different service, go back to the Services page.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Form Card */}
+          <div
+            className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8"
+            style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}
+          >
+            <form
+              action="https://formsubmit.co/pandeyxkanha@gmail.com"
+              method="POST"
+              className="space-y-5"
+              onSubmit={handleBookingSubmit}
+            >
+              {/* Hidden Fields */}
+              <input
+                type="hidden"
+                name="_subject"
+                value="New Booking - QuickRepair"
+              />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" ref={nextInputRef} />
+              {/* Honeypot */}
+              <input
+                type="text"
+                name="_honey"
+                style={{ display: "none" }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
+
+              {/* Full Name */}
+              <div>
+                <label htmlFor="booking-name" className="form-label">
+                  Full Name <span style={{ color: "#ff8c42" }}>*</span>
+                </label>
+                <input
+                  id="booking-name"
+                  type="text"
+                  name="Full Name"
+                  required
+                  placeholder="Enter your full name"
+                  data-ocid="booking.name_input"
+                  className="form-input"
+                />
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label htmlFor="booking-phone" className="form-label">
+                  Phone Number <span style={{ color: "#ff8c42" }}>*</span>
+                </label>
+                <input
+                  id="booking-phone"
+                  type="tel"
+                  name="Phone Number"
+                  required
+                  placeholder="+91 XXXXX XXXXX"
+                  pattern="[+]?[0-9\s\-]{10,15}"
+                  data-ocid="booking.phone_input"
+                  className="form-input"
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label htmlFor="booking-email" className="form-label">
+                  Email Address
+                  <span className="ml-1 text-xs font-normal text-muted-foreground">
+                    (optional)
+                  </span>
+                </label>
+                <input
+                  id="booking-email"
+                  type="email"
+                  name="Email Address"
+                  placeholder="you@example.com"
+                  data-ocid="booking.email_input"
+                  className="form-input"
+                />
+              </div>
+
+              {/* Service */}
+              <div>
+                <label htmlFor="booking-service" className="form-label">
+                  Select Service <span style={{ color: "#ff8c42" }}>*</span>
+                </label>
+                {preSelectedValue ? (
+                  <>
+                    {/* Hidden actual field for form submission */}
+                    <input
+                      type="hidden"
+                      name="Service"
+                      value={preSelectedValue}
+                    />
+                    {/* Visual locked display */}
+                    <div
+                      className="form-input flex items-center justify-between"
+                      style={{
+                        background: "rgba(0,212,170,0.04)",
+                        borderColor: "rgba(0,212,170,0.35)",
+                        cursor: "not-allowed",
+                        opacity: 0.9,
+                      }}
+                    >
+                      <span
+                        className="font-medium"
+                        style={{ color: "#1a1a2e" }}
+                      >
+                        {preSelectedValue}
+                      </span>
+                      <Lock
+                        size={14}
+                        style={{ color: "#00d4aa", flexShrink: 0 }}
+                      />
+                    </div>
+                    {/* Hidden select for required validation fallback */}
+                    <select
+                      id="booking-service"
+                      name="Service-display"
+                      data-ocid="booking.service_select"
+                      defaultValue={preSelectedValue}
+                      disabled
+                      style={{ display: "none" }}
+                    >
+                      <option value={preSelectedValue}>
+                        {preSelectedValue}
+                      </option>
+                    </select>
+                  </>
+                ) : (
+                  <select
+                    id="booking-service"
+                    name="Service"
+                    required
+                    data-ocid="booking.service_select"
+                    className="form-input"
+                  >
+                    <option value="">— Choose a service —</option>
+                    <option value="Basic Electrician - ₹299">
+                      Basic Electrician – ₹299
+                    </option>
+                    <option value="Electrical Appliances - ₹349">
+                      Electrical Appliances – ₹349
+                    </option>
+                    <option value="Electrical Maintenance - ₹399">
+                      Electrical Maintenance – ₹399
+                    </option>
+                    <option value="AC & Cooling Services - ₹499">
+                      AC &amp; Cooling Services – ₹499
+                    </option>
+                    <option value="Electrical Mechanic - ₹299">
+                      Electrical Mechanic – ₹299
+                    </option>
+                  </select>
+                )}
+              </div>
+
+              {/* Address */}
+              <div>
+                <label htmlFor="booking-address" className="form-label">
+                  Full Address <span style={{ color: "#ff8c42" }}>*</span>
+                </label>
+                <textarea
+                  id="booking-address"
+                  name="Full Address"
+                  required
+                  rows={3}
+                  placeholder="House / Flat No., Street, Locality, Delhi"
+                  data-ocid="booking.address_textarea"
+                  className="form-input"
+                  style={{ resize: "vertical", minHeight: "80px" }}
+                />
+              </div>
+
+              {/* Problem Description */}
+              <div>
+                <label htmlFor="booking-problem" className="form-label">
+                  Problem Description
+                  <span className="ml-1 text-xs font-normal text-muted-foreground">
+                    (optional)
+                  </span>
+                </label>
+                <textarea
+                  id="booking-problem"
+                  name="Problem Description"
+                  rows={3}
+                  placeholder="Briefly describe the electrical issue..."
+                  className="form-input"
+                  style={{ resize: "vertical", minHeight: "80px" }}
+                />
+              </div>
+
+              {/* Preferred Time */}
+              <div>
+                <label htmlFor="booking-time" className="form-label">
+                  Preferred Time <span style={{ color: "#ff8c42" }}>*</span>
+                </label>
+                <select
+                  id="booking-time"
+                  name="Preferred Time"
+                  required
+                  data-ocid="booking.time_select"
+                  className="form-input"
+                >
+                  <option value="">— Select timing —</option>
+                  <option value="Within 30 Minutes">Within 30 Minutes</option>
+                  <option value="Within 1 Hour">Within 1 Hour</option>
+                </select>
+              </div>
+
+              {/* Submit */}
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  data-ocid="booking.submit_button"
+                  className="btn-orange w-full text-base"
+                  style={{ padding: "15px 28px", fontSize: "1.05rem" }}
+                >
+                  Confirm Booking
+                </button>
+              </div>
+
+              <p className="text-xs text-center text-muted-foreground pt-1">
+                By booking, you agree to our service terms. We'll call to
+                confirm your booking.
+              </p>
+            </form>
+          </div>
+
+          {/* Help text */}
+          <p className="text-center text-sm text-muted-foreground mt-6">
+            Need urgent help?{" "}
+            <a
+              href="tel:+918004774839"
+              className="text-brand-orange font-semibold no-underline hover:underline"
+            >
+              Call +91 8004774839
+            </a>
+          </p>
+        </div>
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
