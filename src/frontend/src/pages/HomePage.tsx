@@ -194,15 +194,222 @@ export default function HomePage() {
           className="hero-mesh relative overflow-hidden"
           style={{ minHeight: "88vh" }}
         >
-          {/* Decorative grid */}
+          {/* ── Storm Electric Background Elements ── */}
+
+          {/* Electric grid overlay - blue tint */}
           <div
-            className="absolute inset-0 opacity-[0.04]"
+            className="absolute inset-0"
             style={{
               backgroundImage:
-                "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+                "linear-gradient(rgba(100,160,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(100,160,255,0.08) 1px, transparent 1px)",
               backgroundSize: "40px 40px",
+              opacity: 1,
             }}
           />
+
+          {/* Lightning bolt SVGs */}
+          <div
+            className="hero-bolt absolute pointer-events-none select-none"
+            style={{
+              top: "8%",
+              left: "5%",
+              animationDelay: "0s",
+              color: "#4a9eff",
+              opacity: 0.09,
+              transform: "rotate(-15deg)",
+            }}
+          >
+            <Zap size={160} strokeWidth={1.5} />
+          </div>
+          <div
+            className="hero-bolt absolute pointer-events-none select-none"
+            style={{
+              top: "15%",
+              right: "7%",
+              animationDelay: "2.5s",
+              color: "#FFD700",
+              opacity: 0.07,
+              transform: "rotate(20deg)",
+            }}
+          >
+            <Zap size={120} strokeWidth={1.5} />
+          </div>
+          <div
+            className="hero-bolt absolute pointer-events-none select-none"
+            style={{
+              bottom: "20%",
+              left: "8%",
+              animationDelay: "4s",
+              color: "#4a9eff",
+              opacity: 0.06,
+              transform: "rotate(10deg)",
+            }}
+          >
+            <Zap size={200} strokeWidth={1.2} />
+          </div>
+          <div
+            className="hero-bolt absolute pointer-events-none select-none"
+            style={{
+              bottom: "25%",
+              right: "5%",
+              animationDelay: "1.5s",
+              color: "#FFD700",
+              opacity: 0.08,
+              transform: "rotate(-25deg)",
+            }}
+          >
+            <Zap size={90} strokeWidth={1.8} />
+          </div>
+
+          {/* Electric arc lines */}
+          <div
+            className="hero-arc absolute pointer-events-none"
+            style={
+              {
+                top: "22%",
+                left: "18%",
+                width: "2px",
+                height: "140px",
+                background:
+                  "linear-gradient(transparent, rgba(100,160,255,0.65), transparent)",
+                "--arc-rotation": "35deg",
+              } as React.CSSProperties
+            }
+          />
+          <div
+            className="hero-arc absolute pointer-events-none"
+            style={
+              {
+                top: "35%",
+                right: "20%",
+                width: "1px",
+                height: "110px",
+                background:
+                  "linear-gradient(transparent, rgba(100,200,255,0.5), transparent)",
+                "--arc-rotation": "-48deg",
+                animationDelay: "0.8s",
+              } as React.CSSProperties
+            }
+          />
+          <div
+            className="hero-arc absolute pointer-events-none"
+            style={
+              {
+                bottom: "30%",
+                left: "30%",
+                width: "1px",
+                height: "90px",
+                background:
+                  "linear-gradient(transparent, rgba(74,158,255,0.6), transparent)",
+                "--arc-rotation": "22deg",
+                animationDelay: "1.4s",
+              } as React.CSSProperties
+            }
+          />
+          <div
+            className="hero-arc absolute pointer-events-none"
+            style={
+              {
+                top: "60%",
+                right: "35%",
+                width: "2px",
+                height: "160px",
+                background:
+                  "linear-gradient(transparent, rgba(160,100,255,0.45), transparent)",
+                "--arc-rotation": "-30deg",
+                animationDelay: "0.3s",
+              } as React.CSSProperties
+            }
+          />
+
+          {/* Spark dots */}
+          {[
+            {
+              top: "12%",
+              left: "25%",
+              size: 5,
+              color: "rgba(100,200,255,0.55)",
+              delay: "0s",
+            },
+            {
+              top: "28%",
+              left: "12%",
+              size: 4,
+              color: "rgba(255,215,0,0.45)",
+              delay: "0.3s",
+            },
+            {
+              top: "45%",
+              left: "40%",
+              size: 6,
+              color: "rgba(100,200,255,0.5)",
+              delay: "0.6s",
+            },
+            {
+              top: "18%",
+              right: "30%",
+              size: 4,
+              color: "rgba(255,140,66,0.45)",
+              delay: "0.9s",
+            },
+            {
+              top: "65%",
+              left: "20%",
+              size: 5,
+              color: "rgba(100,200,255,0.4)",
+              delay: "1.2s",
+            },
+            {
+              top: "72%",
+              right: "25%",
+              size: 7,
+              color: "rgba(255,215,0,0.5)",
+              delay: "0.15s",
+            },
+            {
+              top: "38%",
+              right: "12%",
+              size: 4,
+              color: "rgba(100,200,255,0.55)",
+              delay: "0.45s",
+            },
+            {
+              top: "55%",
+              left: "55%",
+              size: 5,
+              color: "rgba(255,140,66,0.4)",
+              delay: "0.75s",
+            },
+            {
+              top: "82%",
+              left: "45%",
+              size: 4,
+              color: "rgba(100,200,255,0.45)",
+              delay: "1.05s",
+            },
+            {
+              top: "8%",
+              right: "45%",
+              size: 6,
+              color: "rgba(255,215,0,0.4)",
+              delay: "1.35s",
+            },
+          ].map((spark) => (
+            <div
+              key={`${spark.top}-${spark.delay}`}
+              className="hero-spark absolute pointer-events-none rounded-full"
+              style={{
+                top: spark.top,
+                left: "left" in spark ? spark.left : undefined,
+                right: "right" in spark ? spark.right : undefined,
+                width: spark.size,
+                height: spark.size,
+                background: spark.color,
+                animationDelay: spark.delay,
+                boxShadow: `0 0 ${spark.size * 2}px ${spark.color}`,
+              }}
+            />
+          ))}
 
           <div className="relative max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center py-24 md:py-32">
             {/* Badge */}
@@ -222,7 +429,7 @@ export default function HomePage() {
             </div>
 
             <h1
-              className="font-heading font-extrabold text-white mb-4"
+              className="hero-brand-pulse font-heading font-extrabold text-white mb-4"
               style={{
                 fontSize: "clamp(2.5rem, 6vw, 4rem)",
                 lineHeight: 1.1,

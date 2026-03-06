@@ -246,13 +246,74 @@
   display: inline-block;
 }
 
-/* ── Hero Mesh Background ── */
+/* ── Hero Mesh Background — Storm Electric ── */
 .hero-mesh {
   background:
-    radial-gradient(ellipse at 15% 40%, rgba(255,140,66,0.14) 0%, transparent 55%),
-    radial-gradient(ellipse at 85% 15%, rgba(255,215,0,0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(0,212,170,0.07) 0%, transparent 50%),
-    #1a1a2e;
+    radial-gradient(ellipse at 20% 50%, rgba(0,100,255,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(100,0,255,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(255,140,66,0.08) 0%, transparent 40%),
+    linear-gradient(160deg, #050d1a 0%, #091428 40%, #0a1f4e 70%, #050d1a 100%);
+}
+
+/* ── Storm Electric Animations ── */
+@keyframes electricFlicker {
+  0%   { opacity: 1; }
+  15%  { opacity: 0.3; }
+  30%  { opacity: 1; }
+  55%  { opacity: 0.5; }
+  70%  { opacity: 0.9; }
+  85%  { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+@keyframes electricArc {
+  0%   { transform: translateY(0px) scaleY(1) rotate(var(--arc-rotation, 0deg)); }
+  50%  { transform: translateY(-10px) scaleY(1.05) rotate(var(--arc-rotation, 0deg)); }
+  100% { transform: translateY(0px) scaleY(1) rotate(var(--arc-rotation, 0deg)); }
+}
+
+@keyframes boltFlash {
+  0%   { opacity: 0; }
+  5%   { opacity: 0.8; }
+  10%  { opacity: 0.1; }
+  15%  { opacity: 0.7; }
+  20%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes electricPulse {
+  0%   { text-shadow: 0 0 10px rgba(255,215,0,0.4), 0 0 20px rgba(255,215,0,0.2); }
+  50%  { text-shadow: 0 0 20px rgba(255,215,0,0.8), 0 0 40px rgba(255,215,0,0.4), 0 0 60px rgba(255,140,66,0.2); }
+  100% { text-shadow: 0 0 10px rgba(255,215,0,0.4), 0 0 20px rgba(255,215,0,0.2); }
+}
+
+@keyframes sparkFloat {
+  0%   { transform: translateY(0px) scale(1); opacity: 0.5; }
+  33%  { transform: translateY(-8px) scale(1.3); opacity: 0.9; }
+  66%  { transform: translateY(-4px) scale(0.8); opacity: 0.3; }
+  100% { transform: translateY(0px) scale(1); opacity: 0.5; }
+}
+
+@keyframes arcDrift {
+  0%   { transform: rotate(var(--arc-rotation)) translateX(0px); opacity: 0.4; }
+  50%  { transform: rotate(var(--arc-rotation)) translateX(4px); opacity: 0.7; }
+  100% { transform: rotate(var(--arc-rotation)) translateX(0px); opacity: 0.4; }
+}
+
+.hero-bolt {
+  animation: boltFlash 7s infinite;
+}
+
+.hero-spark {
+  animation: sparkFloat 1.5s infinite ease-in-out;
+}
+
+.hero-arc {
+  animation: arcDrift 2s infinite ease-in-out alternate;
+}
+
+.hero-brand-pulse {
+  animation: electricPulse 2.5s infinite ease-in-out;
 }
 
 /* ── Highlight Box ── */
