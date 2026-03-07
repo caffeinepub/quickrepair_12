@@ -108,19 +108,6 @@ export default function Footer() {
               <li className="flex items-center gap-2">
                 <Mail size={14} className="text-brand-orange shrink-0" />
                 <a
-                  href="mailto:pandeyxkanha@gmail.com"
-                  className="text-sm text-white/75 hover:text-brand-yellow transition-colors no-underline break-all"
-                >
-                  pandeyxkanha@gmail.com
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail
-                  size={14}
-                  style={{ color: "#00d4aa" }}
-                  className="shrink-0"
-                />
-                <a
                   href="mailto:quickrepairhelp@gmail.com"
                   className="text-sm text-white/75 hover:text-brand-yellow transition-colors no-underline break-all"
                 >

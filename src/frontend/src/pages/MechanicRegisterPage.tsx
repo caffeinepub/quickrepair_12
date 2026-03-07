@@ -1,4 +1,12 @@
-import { AlertTriangle, CheckCircle2, FileText, Users } from "lucide-react";
+import {
+  AlertTriangle,
+  BadgeCheck,
+  CheckCircle2,
+  FileText,
+  Lock,
+  ShieldCheck,
+  Users,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
@@ -180,7 +188,7 @@ export default function MechanicRegisterPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <div
-              className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
+              className="inline-flex items-center justify-center w-14 h-14 rounded-3xl mb-4"
               style={{ background: "rgba(255,140,66,0.12)" }}
             >
               <Users size={28} style={{ color: "#ff8c42" }} />
@@ -200,7 +208,7 @@ export default function MechanicRegisterPage() {
           {submitSuccess && (
             <div
               data-ocid="mechanic.success_state"
-              className="rounded-xl px-5 py-4 mb-5 flex items-center gap-3"
+              className="rounded-2xl px-5 py-4 mb-5 flex items-center gap-3"
               style={{
                 background: "rgba(34,197,94,0.08)",
                 border: "1.5px solid rgba(34,197,94,0.3)",
@@ -229,7 +237,7 @@ export default function MechanicRegisterPage() {
 
           {/* Form Card */}
           <div
-            className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8"
+            className="form-card-accent bg-white rounded-3xl border border-gray-200 p-6 md:p-8"
             style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}
           >
             <form
@@ -371,7 +379,7 @@ export default function MechanicRegisterPage() {
                   Upload Aadhar Card <span style={{ color: "#ff8c42" }}>*</span>
                 </label>
                 <div
-                  className="relative rounded-xl border-2 border-dashed p-5 text-center cursor-pointer transition-colors"
+                  className="relative rounded-2xl border-2 border-dashed p-5 text-center cursor-pointer transition-colors"
                   style={{
                     borderColor: fileErrors.aadhar ? "#ef4444" : "#E0E0E0",
                     background: fileErrors.aadhar
@@ -420,7 +428,7 @@ export default function MechanicRegisterPage() {
                   Upload PAN Card <span style={{ color: "#ff8c42" }}>*</span>
                 </label>
                 <div
-                  className="relative rounded-xl border-2 border-dashed p-5 text-center cursor-pointer transition-colors"
+                  className="relative rounded-2xl border-2 border-dashed p-5 text-center cursor-pointer transition-colors"
                   style={{
                     borderColor: fileErrors.pan ? "#ef4444" : "#E0E0E0",
                     background: fileErrors.pan
@@ -481,7 +489,7 @@ export default function MechanicRegisterPage() {
 
               {/* Document Note */}
               <div
-                className="rounded-xl p-4 flex items-start gap-3"
+                className="rounded-2xl p-4 flex items-start gap-3"
                 style={{
                   background: "rgba(255,140,66,0.06)",
                   border: "1px solid rgba(255,140,66,0.2)",
@@ -509,6 +517,62 @@ export default function MechanicRegisterPage() {
                 >
                   Register as Mechanic
                 </button>
+              </div>
+
+              {/* Trust badges below submit */}
+              <div
+                className="mt-4 rounded-3xl border p-4"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(34,197,94,0.04) 0%, rgba(16,185,129,0.06) 100%)",
+                  borderColor: "rgba(34,197,94,0.2)",
+                }}
+              >
+                <div className="flex items-center justify-center gap-3 mb-3 flex-wrap">
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+                    style={{
+                      background: "rgba(34,197,94,0.1)",
+                      color: "#16a34a",
+                      border: "1px solid rgba(34,197,94,0.25)",
+                    }}
+                  >
+                    <ShieldCheck size={13} />
+                    SAFE
+                  </div>
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+                    style={{
+                      background: "rgba(16,185,129,0.1)",
+                      color: "#059669",
+                      border: "1px solid rgba(16,185,129,0.25)",
+                    }}
+                  >
+                    <Lock size={13} />
+                    SECURE
+                  </div>
+                  <div
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold"
+                    style={{
+                      background: "rgba(34,197,94,0.1)",
+                      color: "#15803d",
+                      border: "1px solid rgba(34,197,94,0.25)",
+                    }}
+                  >
+                    <BadgeCheck size={13} />
+                    TRUSTED
+                  </div>
+                </div>
+                <div
+                  className="flex items-center justify-center gap-2 text-xs font-medium"
+                  style={{ color: "#166534" }}
+                >
+                  <Lock size={12} />
+                  <span>
+                    Your data is safe with us — we never share your personal
+                    information
+                  </span>
+                </div>
               </div>
             </form>
           </div>

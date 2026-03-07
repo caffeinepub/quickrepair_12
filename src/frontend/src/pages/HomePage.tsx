@@ -136,13 +136,18 @@ function ServiceCard({
     <div
       ref={cardRef}
       data-ocid={`services.card.${index + 1}`}
-      className="card-hidden service-card bg-white rounded-2xl p-6 border border-gray-200 flex flex-col gap-4"
+      className="card-hidden service-card bg-white rounded-3xl p-6 border border-gray-200 flex flex-col gap-4"
       style={{ boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}
     >
       <div className="flex items-start justify-between">
         <div
-          className="w-11 h-11 rounded-xl flex items-center justify-center"
-          style={{ backgroundColor: `${service.color}18` }}
+          className="service-icon-wrap w-12 h-12 rounded-2xl flex items-center justify-center"
+          style={{
+            backgroundColor:
+              service.color === "#ff8c42"
+                ? "rgba(255,140,66,0.15)"
+                : "rgba(255,215,0,0.15)",
+          }}
         >
           <Icon size={22} style={{ color: service.color }} />
         </div>
@@ -429,7 +434,7 @@ export default function HomePage() {
             </div>
 
             <h1
-              className="hero-brand-pulse font-heading font-extrabold text-white mb-4"
+              className="font-heading font-extrabold text-white mb-4"
               style={{
                 fontSize: "clamp(2.5rem, 6vw, 4rem)",
                 lineHeight: 1.1,
@@ -477,13 +482,21 @@ export default function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="mt-16 grid grid-cols-3 gap-6 sm:gap-12">
+            <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-6">
               {[
                 { value: "30 Min", label: "Response Time", color: "#00d4aa" },
                 { value: "6+", label: "Service Areas", color: "#FFD700" },
                 { value: "₹299", label: "Starting Price", color: "#ff8c42" },
               ].map((stat) => (
-                <div key={stat.label} className="text-center">
+                <div
+                  key={stat.label}
+                  className="text-center rounded-2xl px-3 py-4"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    backdropFilter: "blur(8px)",
+                  }}
+                >
                   <div
                     className="font-heading font-extrabold text-2xl sm:text-3xl"
                     style={{ color: stat.color }}
@@ -626,7 +639,7 @@ export default function HomePage() {
                 ].map(({ icon: Icon, label, sub }) => (
                   <div key={label} className="highlight-box">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center mx-auto mb-3"
                       style={{ background: "rgba(255,140,66,0.2)" }}
                     >
                       <Icon size={20} style={{ color: "#ff8c42" }} />
@@ -674,7 +687,7 @@ export default function HomePage() {
               </h2>
             </div>
 
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-card">
+            <div className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-card">
               <Accordion type="single" collapsible className="w-full">
                 {FAQ_ITEMS.map((item, i) => (
                   <AccordionItem
@@ -728,7 +741,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Contact Info */}
               <div
-                className="rounded-2xl p-8 border border-gray-200"
+                className="rounded-3xl p-8 border border-gray-200"
                 style={{ background: "#F8F9FA" }}
               >
                 <h3 className="font-heading font-bold text-xl mb-6 text-foreground">
@@ -738,7 +751,7 @@ export default function HomePage() {
                 <ul className="space-y-5">
                   <li className="flex items-start gap-4">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5"
                       style={{ background: "rgba(255,140,66,0.12)" }}
                     >
                       <Phone size={18} style={{ color: "#ff8c42" }} />
@@ -759,7 +772,7 @@ export default function HomePage() {
 
                   <li className="flex items-start gap-4">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5"
                       style={{ background: "rgba(255,140,66,0.12)" }}
                     >
                       <Mail size={18} style={{ color: "#ff8c42" }} />
@@ -769,29 +782,8 @@ export default function HomePage() {
                         Email
                       </p>
                       <a
-                        href="mailto:pandeyxkanha@gmail.com"
-                        data-ocid="contact.email_link"
-                        className="font-medium text-foreground hover:text-brand-orange transition-colors no-underline break-all"
-                      >
-                        pandeyxkanha@gmail.com
-                      </a>
-                    </div>
-                  </li>
-
-                  <li className="flex items-start gap-4">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
-                      style={{ background: "rgba(0,212,170,0.12)" }}
-                    >
-                      <Mail size={18} style={{ color: "#00d4aa" }} />
-                    </div>
-                    <div>
-                      <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wide font-medium">
-                        Support Email
-                      </p>
-                      <a
                         href="mailto:quickrepairhelp@gmail.com"
-                        data-ocid="contact.support_email_link"
+                        data-ocid="contact.email_link"
                         className="font-medium text-foreground hover:text-brand-orange transition-colors no-underline break-all"
                       >
                         quickrepairhelp@gmail.com
@@ -801,7 +793,7 @@ export default function HomePage() {
 
                   <li className="flex items-start gap-4">
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
+                      className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5"
                       style={{ background: "rgba(255,140,66,0.12)" }}
                     >
                       <Clock size={18} style={{ color: "#ff8c42" }} />
@@ -825,7 +817,7 @@ export default function HomePage() {
               </div>
 
               {/* Service Areas */}
-              <div className="rounded-2xl p-8 border border-gray-200 bg-white">
+              <div className="rounded-3xl p-8 border border-gray-200 bg-white">
                 <h3 className="font-heading font-bold text-xl mb-6 text-foreground">
                   Service Areas
                 </h3>
@@ -836,7 +828,7 @@ export default function HomePage() {
                   {SERVICE_AREAS.map((area) => (
                     <li key={area} className="flex items-center gap-3">
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                        className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
                         style={{ background: "rgba(255,140,66,0.1)" }}
                       >
                         <MapPin size={14} style={{ color: "#ff8c42" }} />

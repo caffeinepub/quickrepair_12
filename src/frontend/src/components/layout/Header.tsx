@@ -1,11 +1,20 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, X, Zap } from "lucide-react";
+import { ClipboardList, LogIn, LogOut, Menu, User, X, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useInternetIdentity } from "../../hooks/useInternetIdentity";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
+  const { identity, login, clear, isLoggingIn, isInitializing } =
+    useInternetIdentity();
+  const isLoggedIn = !!identity;
+
+  // Get a short display name from principal
+  const principalShort = identity
+    ? `${identity.getPrincipal().toString().slice(0, 10)}…`
+    : "";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -40,7 +49,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 no-underline">
-            <div className="w-8 h-8 bg-brand-orange rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-brand-orange rounded-2xl flex items-center justify-center">
               <Zap size={18} color="white" fill="white" />
             </div>
             <span
@@ -58,7 +67,7 @@ export default function Header() {
               type="button"
               data-ocid="nav.home_link"
               onClick={() => scrollToSection("hero")}
-              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-colors rounded-lg hover:bg-orange-50"
+              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-all duration-200 rounded-xl hover:bg-orange-50 active:scale-95"
             >
               Home
             </button>
@@ -66,14 +75,14 @@ export default function Header() {
               type="button"
               data-ocid="nav.services_link"
               onClick={() => scrollToSection("services")}
-              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-colors rounded-lg hover:bg-orange-50"
+              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-all duration-200 rounded-xl hover:bg-orange-50 active:scale-95"
             >
               Services
             </button>
             <button
               type="button"
               onClick={() => scrollToSection("about")}
-              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-colors rounded-lg hover:bg-orange-50"
+              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-all duration-200 rounded-xl hover:bg-orange-50 active:scale-95"
             >
               About
             </button>
@@ -81,7 +90,7 @@ export default function Header() {
               type="button"
               data-ocid="nav.contact_link"
               onClick={() => scrollToSection("contact")}
-              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-colors rounded-lg hover:bg-orange-50"
+              className="px-4 py-2 text-sm font-medium text-foreground hover:text-brand-orange transition-all duration-200 rounded-xl hover:bg-orange-50 active:scale-95"
             >
               Contact
             </button>
@@ -95,12 +104,62 @@ export default function Header() {
                 Book Now
               </button>
             </Link>
+
+            {/* Auth controls */}
+            {isInitializing ? null : isLoggedIn ? (
+              <div className="flex items-center gap-1 ml-2 pl-2 border-l border-gray-200">
+                <div
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-muted-foreground"
+                  title={identity?.getPrincipal().toString()}
+                >
+                  <User size={14} style={{ color: "#ff8c42" }} />
+                  <span className="max-w-[90px] truncate">
+                    {principalShort}
+                  </span>
+                </div>
+                <Link to="/history" data-ocid="auth.mybookings_link">
+                  <button
+                    type="button"
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl hover:bg-orange-50 transition-all duration-200 active:scale-95"
+                    style={{ color: "#ff8c42" }}
+                  >
+                    <ClipboardList size={14} />
+                    My Bookings
+                  </button>
+                </Link>
+                <button
+                  type="button"
+                  data-ocid="auth.signout_button"
+                  onClick={clear}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-xl hover:bg-red-50 text-red-500 transition-all duration-200 active:scale-95"
+                >
+                  <LogOut size={14} />
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                data-ocid="auth.signin_button"
+                onClick={login}
+                disabled={isLoggingIn}
+                className="flex items-center gap-1.5 ml-2 px-4 py-2 text-sm font-semibold rounded-xl border transition-all duration-200 active:scale-95"
+                style={{
+                  borderColor: "#ff8c42",
+                  color: "#ff8c42",
+                  background: "transparent",
+                }}
+              >
+                <LogIn size={15} />
+                {isLoggingIn ? "Signing in…" : "Sign In"}
+              </button>
+            )}
           </nav>
 
           {/* Mobile hamburger */}
           <button
             type="button"
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-all duration-200 active:scale-95"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
           >
@@ -115,7 +174,7 @@ export default function Header() {
               type="button"
               data-ocid="nav.home_link"
               onClick={() => scrollToSection("hero")}
-              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-lg transition-colors"
+              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-xl transition-all duration-200 active:scale-95"
             >
               Home
             </button>
@@ -123,14 +182,14 @@ export default function Header() {
               type="button"
               data-ocid="nav.services_link"
               onClick={() => scrollToSection("services")}
-              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-lg transition-colors"
+              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-xl transition-all duration-200 active:scale-95"
             >
               Services
             </button>
             <button
               type="button"
               onClick={() => scrollToSection("about")}
-              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-lg transition-colors"
+              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-xl transition-all duration-200 active:scale-95"
             >
               About
             </button>
@@ -138,7 +197,7 @@ export default function Header() {
               type="button"
               data-ocid="nav.contact_link"
               onClick={() => scrollToSection("contact")}
-              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-lg transition-colors"
+              className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-xl transition-all duration-200 active:scale-95"
             >
               Contact
             </button>
@@ -154,6 +213,61 @@ export default function Header() {
                 </button>
               </Link>
             </div>
+
+            {/* Mobile Auth */}
+            {!isInitializing && (
+              <div className="px-4 pt-1 border-t border-gray-100 mt-2 space-y-1">
+                {isLoggedIn ? (
+                  <>
+                    <div className="flex items-center gap-2 px-2 py-1.5 text-xs text-muted-foreground">
+                      <User size={13} style={{ color: "#ff8c42" }} />
+                      <span className="truncate">{principalShort}</span>
+                    </div>
+                    <Link
+                      to="/history"
+                      onClick={() => setMenuOpen(false)}
+                      data-ocid="auth.mybookings_link"
+                    >
+                      <button
+                        type="button"
+                        className="w-full text-left flex items-center gap-2 px-2 py-2.5 text-sm font-semibold rounded-xl hover:bg-orange-50 transition-all duration-200 active:scale-95"
+                        style={{ color: "#ff8c42" }}
+                      >
+                        <ClipboardList size={15} />
+                        My Bookings
+                      </button>
+                    </Link>
+                    <button
+                      type="button"
+                      data-ocid="auth.signout_button"
+                      onClick={() => {
+                        clear();
+                        setMenuOpen(false);
+                      }}
+                      className="w-full text-left flex items-center gap-2 px-2 py-2.5 text-sm font-semibold rounded-xl hover:bg-red-50 text-red-500 transition-all duration-200 active:scale-95"
+                    >
+                      <LogOut size={15} />
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    data-ocid="auth.signin_button"
+                    onClick={() => {
+                      login();
+                      setMenuOpen(false);
+                    }}
+                    disabled={isLoggingIn}
+                    className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-xl border transition-all duration-200 active:scale-95"
+                    style={{ borderColor: "#ff8c42", color: "#ff8c42" }}
+                  >
+                    <LogIn size={15} />
+                    {isLoggingIn ? "Signing in…" : "Sign In"}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
