@@ -313,13 +313,7 @@ export default function MechanicRegisterPage() {
             className="form-card-accent bg-white rounded-3xl border border-gray-200 p-6 md:p-8"
             style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}
           >
-            <form
-              action="https://formsubmit.co/pandeyxkanha@gmail.com"
-              method="POST"
-              encType="multipart/form-data"
-              className="space-y-5"
-              onSubmit={handleSubmit}
-            >
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {/* Hidden Fields */}
               <input
                 type="hidden"

@@ -539,12 +539,7 @@ export default function BookingPage() {
                 className="form-card-accent bg-white rounded-3xl border border-gray-200 p-6 md:p-8"
                 style={{ boxShadow: "0 2px 24px rgba(0,0,0,0.06)" }}
               >
-                <form
-                  action="https://formsubmit.co/pandeyxkanha@gmail.com"
-                  method="POST"
-                  className="space-y-5"
-                  onSubmit={handleBookingSubmit}
-                >
+                <form className="space-y-5" onSubmit={handleBookingSubmit}>
                   {/* Hidden Fields */}
                   <input
                     type="hidden"
