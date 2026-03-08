@@ -1,7 +1,6 @@
-import { useSearch } from "@tanstack/react-router";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 import {
   BadgeCheck,
-  CheckCircle2,
   Clock,
   Lock,
   LogIn,
@@ -9,124 +8,11 @@ import {
   ShieldCheck,
   Zap,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
 import { useActor } from "../hooks/useActor";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
-
-function playSuccessSound() {
-  try {
-    const AudioContextClass =
-      window.AudioContext ||
-      (window as unknown as { webkitAudioContext: typeof AudioContext })
-        .webkitAudioContext;
-    if (!AudioContextClass) return;
-
-    const ctx = new AudioContextClass();
-
-    // Compressor for loudness boost without clipping
-    const compressor = ctx.createDynamicsCompressor();
-    compressor.threshold.value = -6;
-    compressor.knee.value = 3;
-    compressor.ratio.value = 4;
-    compressor.attack.value = 0.001;
-    compressor.release.value = 0.1;
-    compressor.connect(ctx.destination);
-
-    const masterGain = ctx.createGain();
-    masterGain.connect(compressor);
-    masterGain.gain.setValueAtTime(0, ctx.currentTime);
-    masterGain.gain.linearRampToValueAtTime(1.0, ctx.currentTime + 0.005);
-
-    // Note 1: D5 (587Hz) — punchy attack
-    const osc1 = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.connect(gain1);
-    gain1.connect(masterGain);
-    osc1.type = "sine";
-    osc1.frequency.value = 587;
-    gain1.gain.setValueAtTime(1.0, ctx.currentTime);
-    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-    osc1.start(ctx.currentTime);
-    osc1.stop(ctx.currentTime + 0.2);
-
-    // Note 1 overtone for body
-    const osc1b = ctx.createOscillator();
-    const gain1b = ctx.createGain();
-    osc1b.connect(gain1b);
-    gain1b.connect(masterGain);
-    osc1b.type = "triangle";
-    osc1b.frequency.value = 587 * 2;
-    gain1b.gain.setValueAtTime(0.35, ctx.currentTime);
-    gain1b.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
-    osc1b.start(ctx.currentTime);
-    osc1b.stop(ctx.currentTime + 0.18);
-
-    // Note 2: F#5 (740Hz)
-    const osc2 = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.connect(gain2);
-    gain2.connect(masterGain);
-    osc2.type = "sine";
-    osc2.frequency.value = 740;
-    gain2.gain.setValueAtTime(1.0, ctx.currentTime + 0.16);
-    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.38);
-    osc2.start(ctx.currentTime + 0.16);
-    osc2.stop(ctx.currentTime + 0.38);
-
-    const osc2b = ctx.createOscillator();
-    const gain2b = ctx.createGain();
-    osc2b.connect(gain2b);
-    gain2b.connect(masterGain);
-    osc2b.type = "triangle";
-    osc2b.frequency.value = 740 * 2;
-    gain2b.gain.setValueAtTime(0.35, ctx.currentTime + 0.16);
-    gain2b.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.36);
-    osc2b.start(ctx.currentTime + 0.16);
-    osc2b.stop(ctx.currentTime + 0.36);
-
-    // Note 3: A5 (880Hz) — loudest, long sustain
-    const osc3 = ctx.createOscillator();
-    const gain3 = ctx.createGain();
-    osc3.connect(gain3);
-    gain3.connect(masterGain);
-    osc3.type = "sine";
-    osc3.frequency.value = 880;
-    gain3.gain.setValueAtTime(1.0, ctx.currentTime + 0.32);
-    gain3.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
-    osc3.start(ctx.currentTime + 0.32);
-    osc3.stop(ctx.currentTime + 1.1);
-
-    const osc3b = ctx.createOscillator();
-    const gain3b = ctx.createGain();
-    osc3b.connect(gain3b);
-    gain3b.connect(masterGain);
-    osc3b.type = "triangle";
-    osc3b.frequency.value = 880 * 2;
-    gain3b.gain.setValueAtTime(0.4, ctx.currentTime + 0.32);
-    gain3b.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.85);
-    osc3b.start(ctx.currentTime + 0.32);
-    osc3b.stop(ctx.currentTime + 0.85);
-
-    // High shimmer
-    const osc4 = ctx.createOscillator();
-    const gain4 = ctx.createGain();
-    osc4.connect(gain4);
-    gain4.connect(masterGain);
-    osc4.type = "sine";
-    osc4.frequency.value = 1760;
-    gain4.gain.setValueAtTime(0.45, ctx.currentTime + 0.32);
-    gain4.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
-    osc4.start(ctx.currentTime + 0.32);
-    osc4.stop(ctx.currentTime + 0.8);
-
-    masterGain.gain.setValueAtTime(1.0, ctx.currentTime + 0.65);
-    masterGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
-  } catch {
-    // Audio not supported
-  }
-}
 
 // Map service card names to option values in the select
 const SERVICE_VALUE_MAP: Record<string, string> = {
@@ -197,7 +83,7 @@ function TrustBadgesBottom() {
 }
 
 export default function BookingPage() {
-  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const navigate = useNavigate();
   const { service: serviceParam } = useSearch({ strict: false }) as {
     service?: string;
   };
@@ -281,9 +167,8 @@ export default function BookingPage() {
       // Email send failed — data already saved locally, don't block user
     }
 
-    // Show tick + play sound — stays on page, no redirect
-    setSubmitSuccess(true);
-    playSuccessSound();
+    // Redirect to /thankyou page — sound + tick mark will play there
+    navigate({ to: "/thankyou", search: { type: "booking" } });
   };
 
   return (
@@ -346,57 +231,6 @@ export default function BookingPage() {
           {/* Form content — only shown when logged in */}
           {isLoggedIn && (
             <>
-              {/* Full-screen success overlay */}
-              {submitSuccess && (
-                <div
-                  data-ocid="booking.success_state"
-                  className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-                  style={{
-                    background: "rgba(0,0,0,0.72)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <div
-                    className="flex flex-col items-center justify-center rounded-[2rem] px-10 py-12 mx-4"
-                    style={{
-                      background: "rgba(255,255,255,0.97)",
-                      boxShadow: "0 8px 48px rgba(0,0,0,0.18)",
-                      minWidth: "280px",
-                      maxWidth: "380px",
-                      width: "100%",
-                    }}
-                  >
-                    {/* Animated tick circle */}
-                    <div
-                      className="flex items-center justify-center rounded-full mb-5"
-                      style={{
-                        width: 96,
-                        height: 96,
-                        background:
-                          "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
-                        boxShadow: "0 0 0 12px rgba(34,197,94,0.15)",
-                        animation:
-                          "successPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both",
-                      }}
-                    >
-                      <CheckCircle2 size={52} color="white" strokeWidth={2.5} />
-                    </div>
-                    <p
-                      className="font-extrabold text-2xl text-center mb-2"
-                      style={{ color: "#15803d", letterSpacing: "-0.01em" }}
-                    >
-                      Booking Confirmed!
-                    </p>
-                    <p
-                      className="text-sm text-center"
-                      style={{ color: "#6b7280" }}
-                    >
-                      We will call you shortly to confirm your appointment.
-                    </p>
-                  </div>
-                </div>
-              )}
-
               <div className="text-center mb-8">
                 <div
                   className="inline-flex items-center justify-center w-14 h-14 rounded-3xl mb-4"
