@@ -5,6 +5,7 @@ import {
   createRoute,
   createRouter,
 } from "@tanstack/react-router";
+import BackToTop from "./components/layout/BackToTop";
 import AdminPage from "./pages/AdminPage";
 import BookingHistoryPage from "./pages/BookingHistoryPage";
 import BookingPage from "./pages/BookingPage";
@@ -13,7 +14,12 @@ import MechanicRegisterPage from "./pages/MechanicRegisterPage";
 import ThankYouPage from "./pages/ThankYouPage";
 
 const rootRoute = createRootRoute({
-  component: () => <Outlet />,
+  component: () => (
+    <>
+      <Outlet />
+      <BackToTop />
+    </>
+  ),
 });
 
 const homeRoute = createRoute({

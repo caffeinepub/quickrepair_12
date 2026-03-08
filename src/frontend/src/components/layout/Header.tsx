@@ -94,6 +94,17 @@ export default function Header() {
             >
               Contact
             </button>
+            <Link to="/mechanic-register">
+              <button
+                type="button"
+                data-ocid="nav.mechanic_link"
+                className="px-4 py-2 text-sm font-medium transition-all duration-200 rounded-xl hover:bg-orange-50 active:scale-95"
+                style={{ color: "#ff8c42" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Join as Mechanic
+              </button>
+            </Link>
             <Link to="/book">
               <button
                 type="button"
@@ -201,6 +212,16 @@ export default function Header() {
             >
               Contact
             </button>
+            <Link to="/mechanic-register" onClick={() => setMenuOpen(false)}>
+              <button
+                type="button"
+                data-ocid="nav.mechanic_link"
+                className="w-full text-left px-4 py-2.5 text-sm font-medium hover:bg-orange-50 rounded-xl transition-all duration-200 active:scale-95"
+                style={{ color: "#ff8c42" }}
+              >
+                Join as Mechanic
+              </button>
+            </Link>
             <div className="px-4 pt-2">
               <Link to="/book" onClick={() => setMenuOpen(false)}>
                 <button

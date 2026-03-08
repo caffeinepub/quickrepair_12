@@ -482,10 +482,11 @@ export default function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="mt-16 grid grid-cols-3 gap-4 sm:gap-6">
+            <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
               {[
                 { value: "30 Min", label: "Response Time", color: "#00d4aa" },
-                { value: "6+", label: "Service Areas", color: "#FFD700" },
+                { value: "5M+", label: "Happy Customers", color: "#FFD700" },
+                { value: "6+", label: "Service Areas", color: "#ff8c42" },
                 { value: "₹299", label: "Starting Price", color: "#ff8c42" },
               ].map((stat) => (
                 <div
