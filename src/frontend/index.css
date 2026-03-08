@@ -443,3 +443,10 @@
 .service-card:hover .service-icon-wrap {
   transform: scale(1.1) rotate(-5deg);
 }
+
+/* ── Success overlay pop animation ── */
+@keyframes successPop {
+  0% { transform: scale(0.4); opacity: 0; }
+  70% { transform: scale(1.12); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}

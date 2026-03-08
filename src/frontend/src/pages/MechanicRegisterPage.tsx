@@ -260,31 +260,48 @@ export default function MechanicRegisterPage() {
             </p>
           </div>
 
-          {/* Success banner (briefly shown before redirect) */}
+          {/* Full-screen success overlay */}
           {submitSuccess && (
             <div
               data-ocid="mechanic.success_state"
-              className="rounded-2xl px-5 py-4 mb-5 flex items-center gap-3"
+              className="fixed inset-0 z-50 flex flex-col items-center justify-center"
               style={{
-                background: "rgba(34,197,94,0.08)",
-                border: "1.5px solid rgba(34,197,94,0.3)",
+                background: "rgba(0,0,0,0.72)",
+                backdropFilter: "blur(6px)",
               }}
             >
-              <CheckCircle2
-                size={20}
-                style={{ color: "#22c55e", flexShrink: 0 }}
-              />
-              <div>
-                <p
-                  className="font-semibold text-sm"
-                  style={{ color: "#16a34a" }}
+              <div
+                className="flex flex-col items-center justify-center rounded-[2rem] px-10 py-12 mx-4"
+                style={{
+                  background: "rgba(255,255,255,0.97)",
+                  boxShadow: "0 8px 48px rgba(0,0,0,0.18)",
+                  minWidth: "280px",
+                  maxWidth: "380px",
+                  width: "100%",
+                }}
+              >
+                {/* Animated tick circle */}
+                <div
+                  className="flex items-center justify-center rounded-full mb-5"
+                  style={{
+                    width: 96,
+                    height: 96,
+                    background:
+                      "linear-gradient(135deg, #22c55e 0%, #16a34a 100%)",
+                    boxShadow: "0 0 0 12px rgba(34,197,94,0.15)",
+                    animation:
+                      "successPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both",
+                  }}
                 >
-                  Registration submitted!
+                  <CheckCircle2 size={52} color="white" strokeWidth={2.5} />
+                </div>
+                <p
+                  className="font-extrabold text-2xl text-center mb-2"
+                  style={{ color: "#15803d", letterSpacing: "-0.01em" }}
+                >
+                  Registration Submitted!
                 </p>
-                <p
-                  className="text-xs mt-0.5"
-                  style={{ color: "#16a34a", opacity: 0.8 }}
-                >
+                <p className="text-sm text-center" style={{ color: "#6b7280" }}>
                   Our team will review your application and contact you soon.
                 </p>
               </div>
