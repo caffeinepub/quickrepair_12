@@ -5,6 +5,7 @@ import {
   createRoute,
   createRouter,
 } from "@tanstack/react-router";
+import AdminPage from "./pages/AdminPage";
 import BookingHistoryPage from "./pages/BookingHistoryPage";
 import BookingPage from "./pages/BookingPage";
 import HomePage from "./pages/HomePage";
@@ -45,12 +46,19 @@ const historyRoute = createRoute({
   component: BookingHistoryPage,
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admin",
+  component: AdminPage,
+});
+
 const routeTree = rootRoute.addChildren([
   homeRoute,
   bookRoute,
   mechanicRoute,
   thankYouRoute,
   historyRoute,
+  adminRoute,
 ]);
 
 const router = createRouter({ routeTree });
