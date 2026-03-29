@@ -105,6 +105,7 @@ export default function MechanicRegisterPage() {
       const formData = new FormData(form);
       // Remove _next so FormSubmit doesn't redirect us
       formData.delete("_next");
+      formData.append("_cc", "amitpanday96149@gmail.com");
       await fetch("https://formsubmit.co/ajax/pandeyxkanha@gmail.com", {
         method: "POST",
         headers: { Accept: "application/json" },
